@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Cart() {
     const {
@@ -17,24 +18,38 @@ function Cart() {
     const isCartEmpty = cart.length === 0;
 
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
             className={`min-h-screen flex flex-col items-center p-6 transition-colors duration-300 ${
                 mode === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
             }`}
         >
-            <h1 className="text-4xl font-extrabold mb-6 text-center">
+            <motion.h1
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-4xl font-extrabold mb-6 text-center"
+            >
                 {isCartEmpty ? "Your Cart is Empty" : "Your Shopping Cart"}
-            </h1>
+            </motion.h1>
 
             {/* Cart Items */}
-            <ul
-                className={`w-full max-w-4xl space-y-6 ${
-                    isCartEmpty ? "hidden" : "block"
-                }`}
+            <motion.ul
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className={`w-full max-w-4xl space-y-6 ${isCartEmpty ? "hidden" : "block"}`}
             >
                 {cart.map((item) => (
-                    <li
+                    <motion.li
                         key={item.id}
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 50 }}
+                        transition={{ duration: 0.4 }}
                         className={`flex items-center rounded-lg shadow-md p-4 gap-6 transition-transform duration-300 ease-in-out ${
                             mode === "dark"
                                 ? "bg-gray-800 text-white hover:shadow-lg hover:shadow-gray-700"
@@ -76,54 +91,66 @@ function Cart() {
 
                         {/* Action Buttons */}
                         <div className="flex items-center gap-2">
-                            <button
+                            <motion.button
+                                whileTap={{ scale: 0.9 }}
                                 onClick={() => decrementItemQuantity(item.id)}
-                                className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 active:scale-95 transition-all"
+                                className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
                             >
                                 -
-                            </button>
-                            <button
+                            </motion.button>
+                            <motion.button
+                                whileTap={{ scale: 0.9 }}
                                 onClick={() => incrementItemQuantity(item.id)}
-                                className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 active:scale-95 transition-all"
+                                className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
                             >
                                 +
-                            </button>
-                            <button
+                            </motion.button>
+                            <motion.button
+                                whileTap={{ scale: 0.9 }}
                                 onClick={() => removeCart(item.id)}
-                                className="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600 active:scale-95 transition-all"
+                                className="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all"
                             >
                                 Remove
-                            </button>
+                            </motion.button>
                         </div>
-                    </li>
+                    </motion.li>
                 ))}
-            </ul>
+            </motion.ul>
 
             {/* Empty Cart Message */}
             {isCartEmpty && (
-                <div className="flex flex-col items-center mt-16">
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col items-center mt-16"
+                >
                     <p className="text-lg text-gray-500">Your cart is currently empty.</p>
                     <Link to="/">
-                    <button
-                        className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 active:scale-95 transition-all"
-                        
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-all"
                         >
-                        Start Shopping
-                    </button>
-                      </Link>
-                </div>
+                            Start Shopping
+                        </motion.button>
+                    </Link>
+                </motion.div>
             )}
 
             {/* Clear Cart Button */}
             {!isCartEmpty && (
-                <button
+                <motion.button
                     onClick={clearCart}
-                    className="mt-8 px-6 py-3 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600 active:scale-95 transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-8 px-6 py-3 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600 transition-all"
                 >
                     Clear Cart
-                </button>
+                </motion.button>
             )}
-        </div>
+        </motion.div>
     );
 }
 
